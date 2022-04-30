@@ -1,0 +1,122 @@
+version: "2.0"
+
+volumes:
+  ldap-data:
+  slapd-data:
+  config_mongo:
+  node-modules-gateway:
+  node-modules-projects:
+  node-modules-identity:
+
+networks:
+  bolttech:
+
+services:
+
+  api_gateway:
+    image: api_gateway
+    volumes:
+      - ./API_Gateway:/usr/src/app
+      - node-modules-gateway:/usr/src/app/node_modules
+    container_name: api_gateway
+    networks:
+      - bolttech
+    restart: always
+    build: "API_Gateway/"
+    environment:
+      - NODE_ENV=development
+    depends_on:
+      - db
+    ports:
+      - 3000:3000
+    links:
+      - db
+    command: npm run start
+
+  identity_microservice:
+    image: identity_microservice
+    volumes:
+      - ./Identity_Microservice:/usr/src/app
+      - node-modules-identity:/usr/src/app/node_modules
+    container_name: identity_microservice
+    networks:
+      - bolttech
+    restart: always
+    build: "API_Gateway/"
+    environment:
+      - NODE_ENV=development
+    depends_on:
+      - db
+    ports:
+      - 3001:3001
+    links:
+      - db
+    command: npm run start
+
+  projects_microservice:
+    image: projects_microservice
+    volumes:
+      - ./projects_Microservice:/usr/src/app
+      - node-modules-projects:/usr/src/app/node_modules
+    container_name: projects_microservice
+    networks:
+      - bolttech
+    restart: always
+    build: "API_Gateway/"
+    environment:
+      - NODE_ENV=development
+    depends_on:
+      - db
+    ports:
+      - 3003:3003
+    links:
+      - db
+    command: npm run start
+
+  ldap:
+    image: osixia/openldap:latest
+    container_name: "bolttech_ldap"
+    networks:
+      - bolttech
+    ports:
+      - 1041:389
+      - 1042:689
+    volumes:
+      - ~/boltteck/dataBase/data/ldap-data:/var/lib/ldap
+      - ~/boltteck/dataBase/data/sldap-data:/etc/ldap/slapd.d
+    restart: always
+    environment:
+      LDAP_ORGANISATION: "bolttech"
+      LDAP_DOMAIN: "bolttech"
+      LDAP_ADMIN_PASSWORD: "Bolttech2022!"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "3"
+
+  mongo-express:
+    image: mongo-express
+    container_name: mongo-express
+    networks:
+      - bolttech
+    restart: always
+    ports:
+      - 8081:8081
+    links:
+      - db
+
+  db:
+    build: "bolttech_mongodb/"
+    container_name: mongo
+    image: mongo
+    networks:
+      - bolttech
+    restart: always
+    mem_limit: 8g
+    mem_reservation: 1g
+    volumes:
+      - ~/boltteck/dataBase/data/mongodb:/data/db
+      - config_mongo:/data/configdb
+    ports:
+      - "27017:27017"

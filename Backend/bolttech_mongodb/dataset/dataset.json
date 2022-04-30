@@ -1,0 +1,50 @@
+[
+   {
+   "_id": "5d42afab572fb50006b343b1",
+    "hwId": "evo_1000001",
+    "accessLevel": "Public",
+    "stationType": "Private",
+    "accessType": "Street",
+    "address": "Avenida Dom Afonso Henriques\n4450-017 Matosinhos\nPorto",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            -8.680429,
+            41.174763
+        ]
+    },
+    "chargerType": "002",
+    "connectorType": "",
+    "receptacleType": "",
+    "eletricCompany": "",
+    "voltage": 0,
+    "amperage": 0,
+    "power": 0,
+    "instantBooking": false,
+    "price": 0.1
+   },
+   {
+      "_id": "5d42afac572fb50006b343b3",
+      "hwId": "evo_1000002",
+      "accessLevel": "Public",
+      "stationType": "Private",
+      "accessType": "Street",
+      "address": "Avenida Dom Afonso Henriques\n4450-017 Matosinhos\nPorto",
+      "geometry": {
+          "type": "Point",
+          "coordinates": [
+              -8.680111169815065,
+              41.17476162546362
+          ]
+      },
+      "chargerType": "002",
+      "connectorType": "",
+      "receptacleType": "",
+      "eletricCompany": "",
+      "voltage": 0,
+      "amperage": 0,
+      "power": 0,
+      "instantBooking": false,
+      "price": 0.5
+  }
+]
